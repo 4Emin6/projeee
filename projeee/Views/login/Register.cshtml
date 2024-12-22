@@ -1,0 +1,56 @@
+﻿@model projeee.Models.RegisterViewModel
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="E-Spor Yönetim Sistemi Kayıt Sayfası">
+    <title>E-Spor Yönetim Sistemi Kayıt Ol</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/sign-in.css" rel="stylesheet" />
+</head>
+<body class="d-flex align-items-center py-4 bg-body-tertiary">
+    <main class="form-signin w-100 m-auto text-center">
+        @using (Html.BeginForm("Register", "Login", FormMethod.Post))
+        {
+            <img class="mb-4" src="~/Content/E-SPOR.png" alt="E-Spor Logo" width="72" height="57">
+            <h1 class="h3 mb-3 fw-normal">E-Spor Yönetim Sistemi Kayıt Sayfası</h1>
+
+            <div class="form-floating mb-3">
+                @Html.TextBoxFor(m => m.KullaniciAdi, new { @class = "form-control", placeholder = "Kullanıcı Adı", id = "KullaniciAdi" })
+                <label for="KullaniciAdi">Kullanıcı Adı</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Email", id = "Email" })
+                <label for="Email">Email adresi</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                @Html.PasswordFor(m => m.Parola, new { @class = "form-control", placeholder = "Şifre", id = "Parola" })
+                <label for="Parola">Şifre</label>
+            </div>
+
+            <div class="form-floating mb-3">
+                @Html.PasswordFor(m => m.ParolaTekrar, new { @class = "form-control", placeholder = "Şifre Tekrar", id = "ParolaTekrar" })
+                <label for="ParolaTekrar">Şifre Tekrar</label>
+            </div>
+
+            <button class="btn btn-primary w-100 py-2 mb-2" type="submit">Kayıt Ol</button>
+            <a href="@Url.Action("Index", "Login")" class="btn btn-outline-secondary w-100 py-2">Giriş Yap</a>
+
+            <p class="mt-5 mb-3 text-body-secondary">&copy; 2024</p>
+
+            if (ViewBag.mesaj != null)
+            {
+                <div class="alert alert-danger" role="alert">
+                    @ViewBag.mesaj
+                </div>
+            }
+        }
+    </main>
+</body>
+</html>

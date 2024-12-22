@@ -1,0 +1,527 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="projesqlModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Kullancılar">
+          <Key>
+            <PropertyRef Name="kullanıcıID" />
+          </Key>
+          <Property Name="kullanıcıID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="kullaniciAdı" Type="nvarchar" MaxLength="50" />
+          <Property Name="şifre" Type="nvarchar" MaxLength="250" />
+          <Property Name="ePosta" Type="nvarchar" MaxLength="150" />
+          <Property Name="yetkiTürüID" Type="int" />
+        </EntityType>
+        <EntityType Name="MaçDetay">
+          <Key>
+            <PropertyRef Name="maçDetayID" />
+          </Key>
+          <Property Name="maçDetayID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="maçID" Type="int" />
+          <Property Name="oyuncuID" Type="int" />
+          <Property Name="skor" Type="nchar" MaxLength="20" />
+          <Property Name="kda" Type="int" />
+        </EntityType>
+        <EntityType Name="Maçlar">
+          <Key>
+            <PropertyRef Name="maçID" />
+          </Key>
+          <Property Name="maçID" Type="int" Nullable="false" />
+          <Property Name="turnuvaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="takım1ID" Type="int" />
+          <Property Name="takım2ID" Type="int" />
+          <Property Name="maçTarihi" Type="date" />
+          <Property Name="sonuç" Type="nchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Oyuncular">
+          <Key>
+            <PropertyRef Name="oyuncuID" />
+          </Key>
+          <Property Name="oyuncuID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="takımID" Type="int" />
+          <Property Name="kullanıcıID" Type="int" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="Takımlar">
+          <Key>
+            <PropertyRef Name="takımID" />
+          </Key>
+          <Property Name="takımID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="takımAdı" Type="nchar" MaxLength="50" />
+          <Property Name="takımKaptanıAdı" Type="int" />
+        </EntityType>
+        <EntityType Name="Turnuvalar">
+          <Key>
+            <PropertyRef Name="turnuvaID" />
+          </Key>
+          <Property Name="turnuvaID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="turnuvaAdı" Type="nvarchar" MaxLength="100" />
+          <Property Name="başlangıçTarihi" Type="date" />
+          <Property Name="bitişTarihi" Type="date" />
+        </EntityType>
+        <EntityType Name="YetkiTürleri">
+          <Key>
+            <PropertyRef Name="yetkiTürüID" />
+          </Key>
+          <Property Name="yetkiTürüID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="yetkiAdı" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="FK_Kullancılar_YetkiTürleri">
+          <End Role="YetkiTürleri" Type="Self.YetkiTürleri" Multiplicity="0..1" />
+          <End Role="Kullancılar" Type="Self.Kullancılar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTürleri">
+              <PropertyRef Name="yetkiTürüID" />
+            </Principal>
+            <Dependent Role="Kullancılar">
+              <PropertyRef Name="yetkiTürüID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MaçDetay_Maçlar">
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="0..1" />
+          <End Role="MaçDetay" Type="Self.MaçDetay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maçlar">
+              <PropertyRef Name="maçID" />
+            </Principal>
+            <Dependent Role="MaçDetay">
+              <PropertyRef Name="maçID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maçlar_Takımlar">
+          <End Role="Takımlar" Type="Self.Takımlar" Multiplicity="0..1" />
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takımlar">
+              <PropertyRef Name="takımID" />
+            </Principal>
+            <Dependent Role="Maçlar">
+              <PropertyRef Name="takım1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maçlar_Takımlar1">
+          <End Role="Takımlar" Type="Self.Takımlar" Multiplicity="0..1" />
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takımlar">
+              <PropertyRef Name="takımID" />
+            </Principal>
+            <Dependent Role="Maçlar">
+              <PropertyRef Name="takım2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maçlar_Turnuvalar">
+          <End Role="Turnuvalar" Type="Self.Turnuvalar" Multiplicity="1" />
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turnuvalar">
+              <PropertyRef Name="turnuvaID" />
+            </Principal>
+            <Dependent Role="Maçlar">
+              <PropertyRef Name="turnuvaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oyuncular_Kullancılar">
+          <End Role="Kullancılar" Type="Self.Kullancılar" Multiplicity="0..1" />
+          <End Role="Oyuncular" Type="Self.Oyuncular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullancılar">
+              <PropertyRef Name="kullanıcıID" />
+            </Principal>
+            <Dependent Role="Oyuncular">
+              <PropertyRef Name="kullanıcıID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oyuncular_Takımlar">
+          <End Role="Takımlar" Type="Self.Takımlar" Multiplicity="0..1" />
+          <End Role="Oyuncular" Type="Self.Oyuncular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takımlar">
+              <PropertyRef Name="takımID" />
+            </Principal>
+            <Dependent Role="Oyuncular">
+              <PropertyRef Name="takımID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projesqlModelStoreContainer">
+          <EntitySet Name="Kullancılar" EntityType="Self.Kullancılar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MaçDetay" EntityType="Self.MaçDetay" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Maçlar" EntityType="Self.Maçlar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Oyuncular" EntityType="Self.Oyuncular" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Takımlar" EntityType="Self.Takımlar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Turnuvalar" EntityType="Self.Turnuvalar" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="YetkiTürleri" EntityType="Self.YetkiTürleri" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Kullancılar_YetkiTürleri" Association="Self.FK_Kullancılar_YetkiTürleri">
+            <End Role="YetkiTürleri" EntitySet="YetkiTürleri" />
+            <End Role="Kullancılar" EntitySet="Kullancılar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MaçDetay_Maçlar" Association="Self.FK_MaçDetay_Maçlar">
+            <End Role="Maçlar" EntitySet="Maçlar" />
+            <End Role="MaçDetay" EntitySet="MaçDetay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maçlar_Takımlar" Association="Self.FK_Maçlar_Takımlar">
+            <End Role="Takımlar" EntitySet="Takımlar" />
+            <End Role="Maçlar" EntitySet="Maçlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maçlar_Takımlar1" Association="Self.FK_Maçlar_Takımlar1">
+            <End Role="Takımlar" EntitySet="Takımlar" />
+            <End Role="Maçlar" EntitySet="Maçlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maçlar_Turnuvalar" Association="Self.FK_Maçlar_Turnuvalar">
+            <End Role="Turnuvalar" EntitySet="Turnuvalar" />
+            <End Role="Maçlar" EntitySet="Maçlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oyuncular_Kullancılar" Association="Self.FK_Oyuncular_Kullancılar">
+            <End Role="Kullancılar" EntitySet="Kullancılar" />
+            <End Role="Oyuncular" EntitySet="Oyuncular" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oyuncular_Takımlar" Association="Self.FK_Oyuncular_Takımlar">
+            <End Role="Takımlar" EntitySet="Takımlar" />
+            <End Role="Oyuncular" EntitySet="Oyuncular" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="projesqlModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Kullancılar">
+          <Key>
+            <PropertyRef Name="kullanıcıID" />
+          </Key>
+          <Property Name="kullanıcıID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="kullaniciAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="şifre" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ePosta" Type="String" MaxLength="150" FixedLength="false" Unicode="true" />
+          <Property Name="yetkiTürüID" Type="Int32" />
+          <NavigationProperty Name="YetkiTürleri" Relationship="Self.FK_Kullancılar_YetkiTürleri" FromRole="Kullancılar" ToRole="YetkiTürleri" />
+          <NavigationProperty Name="Oyuncular" Relationship="Self.FK_Oyuncular_Kullancılar" FromRole="Kullancılar" ToRole="Oyuncular" />
+        </EntityType>
+        <EntityType Name="MaçDetay">
+          <Key>
+            <PropertyRef Name="maçDetayID" />
+          </Key>
+          <Property Name="maçDetayID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="maçID" Type="Int32" />
+          <Property Name="oyuncuID" Type="Int32" />
+          <Property Name="skor" Type="String" MaxLength="20" FixedLength="true" Unicode="true" />
+          <Property Name="kda" Type="Int32" />
+          <NavigationProperty Name="Maçlar" Relationship="Self.FK_MaçDetay_Maçlar" FromRole="MaçDetay" ToRole="Maçlar" />
+        </EntityType>
+        <EntityType Name="Maçlar">
+          <Key>
+            <PropertyRef Name="maçID" />
+          </Key>
+          <Property Name="maçID" Type="Int32" Nullable="false" />
+          <Property Name="turnuvaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="takım1ID" Type="Int32" />
+          <Property Name="takım2ID" Type="Int32" />
+          <Property Name="maçTarihi" Type="DateTime" Precision="0" />
+          <Property Name="sonuç" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <NavigationProperty Name="MaçDetay" Relationship="Self.FK_MaçDetay_Maçlar" FromRole="Maçlar" ToRole="MaçDetay" />
+          <NavigationProperty Name="Takımlar" Relationship="Self.FK_Maçlar_Takımlar" FromRole="Maçlar" ToRole="Takımlar" />
+          <NavigationProperty Name="Takımlar1" Relationship="Self.FK_Maçlar_Takımlar1" FromRole="Maçlar" ToRole="Takımlar" />
+          <NavigationProperty Name="Turnuvalar" Relationship="Self.FK_Maçlar_Turnuvalar" FromRole="Maçlar" ToRole="Turnuvalar" />
+        </EntityType>
+        <EntityType Name="Oyuncular">
+          <Key>
+            <PropertyRef Name="oyuncuID" />
+          </Key>
+          <Property Name="oyuncuID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="takımID" Type="Int32" />
+          <Property Name="kullanıcıID" Type="Int32" />
+          <NavigationProperty Name="Kullancılar" Relationship="Self.FK_Oyuncular_Kullancılar" FromRole="Oyuncular" ToRole="Kullancılar" />
+          <NavigationProperty Name="Takımlar" Relationship="Self.FK_Oyuncular_Takımlar" FromRole="Oyuncular" ToRole="Takımlar" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <EntityType Name="Takımlar">
+          <Key>
+            <PropertyRef Name="takımID" />
+          </Key>
+          <Property Name="takımID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="takımAdı" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
+          <Property Name="takımKaptanıAdı" Type="Int32" />
+          <NavigationProperty Name="Maçlar" Relationship="Self.FK_Maçlar_Takımlar" FromRole="Takımlar" ToRole="Maçlar" />
+          <NavigationProperty Name="Maçlar1" Relationship="Self.FK_Maçlar_Takımlar1" FromRole="Takımlar" ToRole="Maçlar" />
+          <NavigationProperty Name="Oyuncular" Relationship="Self.FK_Oyuncular_Takımlar" FromRole="Takımlar" ToRole="Oyuncular" />
+        </EntityType>
+        <EntityType Name="Turnuvalar">
+          <Key>
+            <PropertyRef Name="turnuvaID" />
+          </Key>
+          <Property Name="turnuvaID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="turnuvaAdı" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="başlangıçTarihi" Type="DateTime" Precision="0" />
+          <Property Name="bitişTarihi" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Maçlar" Relationship="Self.FK_Maçlar_Turnuvalar" FromRole="Turnuvalar" ToRole="Maçlar" />
+        </EntityType>
+        <EntityType Name="YetkiTürleri">
+          <Key>
+            <PropertyRef Name="yetkiTürüID" />
+          </Key>
+          <Property Name="yetkiTürüID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="yetkiAdı" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Kullancılar" Relationship="Self.FK_Kullancılar_YetkiTürleri" FromRole="YetkiTürleri" ToRole="Kullancılar" />
+        </EntityType>
+        <Association Name="FK_Kullancılar_YetkiTürleri">
+          <End Role="YetkiTürleri" Type="Self.YetkiTürleri" Multiplicity="0..1" />
+          <End Role="Kullancılar" Type="Self.Kullancılar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="YetkiTürleri">
+              <PropertyRef Name="yetkiTürüID" />
+            </Principal>
+            <Dependent Role="Kullancılar">
+              <PropertyRef Name="yetkiTürüID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oyuncular_Kullancılar">
+          <End Role="Kullancılar" Type="Self.Kullancılar" Multiplicity="0..1" />
+          <End Role="Oyuncular" Type="Self.Oyuncular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Kullancılar">
+              <PropertyRef Name="kullanıcıID" />
+            </Principal>
+            <Dependent Role="Oyuncular">
+              <PropertyRef Name="kullanıcıID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MaçDetay_Maçlar">
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="0..1" />
+          <End Role="MaçDetay" Type="Self.MaçDetay" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Maçlar">
+              <PropertyRef Name="maçID" />
+            </Principal>
+            <Dependent Role="MaçDetay">
+              <PropertyRef Name="maçID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maçlar_Takımlar">
+          <End Role="Takımlar" Type="Self.Takımlar" Multiplicity="0..1" />
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takımlar">
+              <PropertyRef Name="takımID" />
+            </Principal>
+            <Dependent Role="Maçlar">
+              <PropertyRef Name="takım1ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maçlar_Takımlar1">
+          <End Role="Takımlar" Type="Self.Takımlar" Multiplicity="0..1" />
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takımlar">
+              <PropertyRef Name="takımID" />
+            </Principal>
+            <Dependent Role="Maçlar">
+              <PropertyRef Name="takım2ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Maçlar_Turnuvalar">
+          <End Role="Turnuvalar" Type="Self.Turnuvalar" Multiplicity="1" />
+          <End Role="Maçlar" Type="Self.Maçlar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Turnuvalar">
+              <PropertyRef Name="turnuvaID" />
+            </Principal>
+            <Dependent Role="Maçlar">
+              <PropertyRef Name="turnuvaID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Oyuncular_Takımlar">
+          <End Role="Takımlar" Type="Self.Takımlar" Multiplicity="0..1" />
+          <End Role="Oyuncular" Type="Self.Oyuncular" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Takımlar">
+              <PropertyRef Name="takımID" />
+            </Principal>
+            <Dependent Role="Oyuncular">
+              <PropertyRef Name="takımID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="projesqlEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Kullancılar" EntityType="Self.Kullancılar" />
+          <EntitySet Name="MaçDetay" EntityType="Self.MaçDetay" />
+          <EntitySet Name="Maçlar" EntityType="Self.Maçlar" />
+          <EntitySet Name="Oyuncular" EntityType="Self.Oyuncular" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
+          <EntitySet Name="Takımlar" EntityType="Self.Takımlar" />
+          <EntitySet Name="Turnuvalar" EntityType="Self.Turnuvalar" />
+          <EntitySet Name="YetkiTürleri" EntityType="Self.YetkiTürleri" />
+          <AssociationSet Name="FK_Kullancılar_YetkiTürleri" Association="Self.FK_Kullancılar_YetkiTürleri">
+            <End Role="YetkiTürleri" EntitySet="YetkiTürleri" />
+            <End Role="Kullancılar" EntitySet="Kullancılar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oyuncular_Kullancılar" Association="Self.FK_Oyuncular_Kullancılar">
+            <End Role="Kullancılar" EntitySet="Kullancılar" />
+            <End Role="Oyuncular" EntitySet="Oyuncular" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MaçDetay_Maçlar" Association="Self.FK_MaçDetay_Maçlar">
+            <End Role="Maçlar" EntitySet="Maçlar" />
+            <End Role="MaçDetay" EntitySet="MaçDetay" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maçlar_Takımlar" Association="Self.FK_Maçlar_Takımlar">
+            <End Role="Takımlar" EntitySet="Takımlar" />
+            <End Role="Maçlar" EntitySet="Maçlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maçlar_Takımlar1" Association="Self.FK_Maçlar_Takımlar1">
+            <End Role="Takımlar" EntitySet="Takımlar" />
+            <End Role="Maçlar" EntitySet="Maçlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Maçlar_Turnuvalar" Association="Self.FK_Maçlar_Turnuvalar">
+            <End Role="Turnuvalar" EntitySet="Turnuvalar" />
+            <End Role="Maçlar" EntitySet="Maçlar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Oyuncular_Takımlar" Association="Self.FK_Oyuncular_Takımlar">
+            <End Role="Takımlar" EntitySet="Takımlar" />
+            <End Role="Oyuncular" EntitySet="Oyuncular" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="projesqlModelStoreContainer" CdmEntityContainer="projesqlEntities">
+          <EntitySetMapping Name="Kullancılar">
+            <EntityTypeMapping TypeName="projesqlModel.Kullancılar">
+              <MappingFragment StoreEntitySet="Kullancılar">
+                <ScalarProperty Name="kullanıcıID" ColumnName="kullanıcıID" />
+                <ScalarProperty Name="kullaniciAdı" ColumnName="kullaniciAdı" />
+                <ScalarProperty Name="şifre" ColumnName="şifre" />
+                <ScalarProperty Name="ePosta" ColumnName="ePosta" />
+                <ScalarProperty Name="yetkiTürüID" ColumnName="yetkiTürüID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="MaçDetay">
+            <EntityTypeMapping TypeName="projesqlModel.MaçDetay">
+              <MappingFragment StoreEntitySet="MaçDetay">
+                <ScalarProperty Name="maçDetayID" ColumnName="maçDetayID" />
+                <ScalarProperty Name="maçID" ColumnName="maçID" />
+                <ScalarProperty Name="oyuncuID" ColumnName="oyuncuID" />
+                <ScalarProperty Name="skor" ColumnName="skor" />
+                <ScalarProperty Name="kda" ColumnName="kda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Maçlar">
+            <EntityTypeMapping TypeName="projesqlModel.Maçlar">
+              <MappingFragment StoreEntitySet="Maçlar">
+                <ScalarProperty Name="maçID" ColumnName="maçID" />
+                <ScalarProperty Name="turnuvaID" ColumnName="turnuvaID" />
+                <ScalarProperty Name="takım1ID" ColumnName="takım1ID" />
+                <ScalarProperty Name="takım2ID" ColumnName="takım2ID" />
+                <ScalarProperty Name="maçTarihi" ColumnName="maçTarihi" />
+                <ScalarProperty Name="sonuç" ColumnName="sonuç" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Oyuncular">
+            <EntityTypeMapping TypeName="projesqlModel.Oyuncular">
+              <MappingFragment StoreEntitySet="Oyuncular">
+                <ScalarProperty Name="oyuncuID" ColumnName="oyuncuID" />
+                <ScalarProperty Name="takımID" ColumnName="takımID" />
+                <ScalarProperty Name="kullanıcıID" ColumnName="kullanıcıID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="projesqlModel.sysdiagrams">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Takımlar">
+            <EntityTypeMapping TypeName="projesqlModel.Takımlar">
+              <MappingFragment StoreEntitySet="Takımlar">
+                <ScalarProperty Name="takımID" ColumnName="takımID" />
+                <ScalarProperty Name="takımAdı" ColumnName="takımAdı" />
+                <ScalarProperty Name="takımKaptanıAdı" ColumnName="takımKaptanıAdı" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Turnuvalar">
+            <EntityTypeMapping TypeName="projesqlModel.Turnuvalar">
+              <MappingFragment StoreEntitySet="Turnuvalar">
+                <ScalarProperty Name="turnuvaID" ColumnName="turnuvaID" />
+                <ScalarProperty Name="turnuvaAdı" ColumnName="turnuvaAdı" />
+                <ScalarProperty Name="başlangıçTarihi" ColumnName="başlangıçTarihi" />
+                <ScalarProperty Name="bitişTarihi" ColumnName="bitişTarihi" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="YetkiTürleri">
+            <EntityTypeMapping TypeName="projesqlModel.YetkiTürleri">
+              <MappingFragment StoreEntitySet="YetkiTürleri">
+                <ScalarProperty Name="yetkiTürüID" ColumnName="yetkiTürüID" />
+                <ScalarProperty Name="yetkiAdı" ColumnName="yetkiAdı" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

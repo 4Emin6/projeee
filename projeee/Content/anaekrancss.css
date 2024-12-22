@@ -1,0 +1,95 @@
+﻿body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #000; /* Arka plan siyah */
+    color: #fff; /* Yazılar beyaz */
+}
+
+/* Header yapısı */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #0b0b0b;
+    border-bottom: 1px solid #222;
+    width: 100%; /* Tam ekran genişliği */
+    position: fixed; /* Üstte sabit */
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Üstte kalması için */
+    box-sizing: border-box; /* Padding dahil genişlik */
+}
+
+/* Logo kısmı */
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+    .logo img {
+        width: 40px;
+        height: 40px;
+        margin-right: 10px;
+    }
+
+    .logo span {
+        font-size: 18px;
+        font-weight: bold;
+    }
+
+/* Navigasyon linkleri */
+.nav-links {
+    display: flex;
+    gap: 20px;
+}
+
+    .nav-links a {
+        text-decoration: none;
+        color: #fff;
+        font-size: 14px;
+    }
+
+        .nav-links a.active {
+            color: #00ff00;
+            border-bottom: 2px solid #00ff00;
+            padding-bottom: 2px;
+        }
+
+/* Buton ve aksiyonlar */
+.actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.pricing {
+    background-color: transparent;
+    color: #00ff00;
+    border: 1px solid #00ff00;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+    .pricing:hover {
+        background-color: #00ff00;
+        color: #000;
+    }
+
+/* İkonlar */
+.icons {
+    display: flex;
+    gap: 10px;
+}
+
+.icon {
+    text-decoration: none;
+    color: #fff;
+    font-size: 14px;
+}
+
+    .icon:hover {
+        color: #00ff00;
+    }
